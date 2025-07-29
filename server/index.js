@@ -29,6 +29,8 @@ app.use(
         origin: ["https://edspire-frontend.vercel.app", "http://localhost:3000"],
         credentials: true,
         methods: ["GET", "POST", "PUT", "DELETE"],
+        allowedHeaders: ["Content-Type", "Authorization"],
+        exposedHeaders: ["set-cookie"]
     })
 );
 
@@ -41,6 +43,12 @@ app.use(
 
 //cloudinary connection
 cloudinaryConnect();
+
+// Add after middlewares, before routes
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.path}`);
+    next();
+});
 
 //routes
 app.use("/api/v1/auth", userRoutes);
@@ -64,6 +72,15 @@ app.get("/", (req,res) => {
     });
 });
 
+// Add error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({
+        success: false,
+        message: "Internal Server Error",
+        error: process.env.NODE_ENV === 'development' ? err.message : {}
+    });
+});
 
 app.listen(PORT, () => {
     console.log(`App is running at ${PORT}`);
