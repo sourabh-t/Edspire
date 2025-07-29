@@ -22,12 +22,15 @@ database.connect();
 //middlewares
 app.use(express.json());
 app.use(cookieParser());
+
+
 app.use(
     cors({
-        origin: "http://localhost:3000",
+        origin: ["https://edspire-frontend.vercel.app", "http://localhost:3000"],
         credentials: true,
+        methods: ["GET", "POST", "PUT", "DELETE"],
     })
-)
+);
 
 app.use(
     fileUpload({
@@ -45,6 +48,13 @@ app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/course", courseRoutes);
 app.use("/api/v1/payment", paymentRoutes);
 
+// Add health check endpoint before default route
+app.get("/api/v1/health", (req, res) => {
+    return res.json({
+        success: true,
+        message: "Server is up and running"
+    });
+});
 
 //def route
 app.get("/", (req,res) => {
