@@ -26,10 +26,13 @@ app.use(cookieParser());
 
 app.use(
     cors({
-        origin: process.env.FRONTEND_URL ? 
-            [process.env.FRONTEND_URL, "http://localhost:3000"] : 
-            ["http://localhost:3000", "https://edspire-bocj.vercel.app"],
-        credentials:true,
+        origin: [
+            "https://edspire-bocj.vercel.app",
+            "http://localhost:3000"
+        ],
+        credentials: true,
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        allowedHeaders: ["Content-Type", "Authorization", "x-access-token"],
     })
 );
 
