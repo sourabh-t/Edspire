@@ -28,7 +28,7 @@ app.use(
     cors({
         origin: process.env.FRONTEND_URL ? 
             [process.env.FRONTEND_URL, "http://localhost:3000"] : 
-            ["http://localhost:3000", "https://edspire-three.vercel.app"],
+            ["http://localhost:3000", "https://edspire-rho.vercel.app/"],
         credentials:true,
     })
 );
